@@ -1,0 +1,32 @@
+{
+  "metrics": {
+    "accuracy": 0.8883154761904761,
+    "validation_f1": 0.8873284576456527,
+    "validation_recall": 0.8874047619047619
+  },
+  "config": {
+    "data_path": "train.csv",
+    "artifact_dir": "artifacts",
+    "target_column": "Heart Disease",
+    "test_size": "0.2",
+    "random_state": "42",
+    "n_iter_search": "20",
+    "cv_folds": "5"
+  },
+  "features_in": [
+    "id",
+    "Age",
+    "Sex",
+    "Chest pain type",
+    "BP",
+    "Cholesterol",
+    "FBS over 120",
+    "EKG results",
+    "Max HR",
+    "Exercise angina",
+    "ST depression",
+    "Slope of ST",
+    "Number of vessels fluro",
+    "Thallium"
+  ]
+}

@@ -1,0 +1,11 @@
+HEART DISEASE DATASET SUMMARY
+==================================================
+
+Total Records: 630000
+Features: 15
+Target Variable: heart_disease
+Positive Cases (Heart Disease): 282454 (44.8%)
+Negative Cases (No Disease): 347546 (55.2%)
+
+MISSING VALUES:
+  No missing values found
