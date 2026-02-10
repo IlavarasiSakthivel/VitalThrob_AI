@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // Custom Styles for Heartbeat Animation
 const styles = `
@@ -24,6 +24,10 @@ const styles = `
   
   .animate-fade-in-up {
     animation: fadeInUp 0.5s ease-out;
+  }
+
+  .modal-open {
+    overflow: hidden;
   }
 `;
 
@@ -184,6 +188,19 @@ function App() {
   const [showHelp, setShowHelp] = useState(false);
   const [showAdvancedCharts, setShowAdvancedCharts] = useState(false);
 
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (showHelp) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+
+    return () => {
+      document.body.classList.remove('modal-open');
+    };
+  }, [showHelp]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -234,10 +251,10 @@ function App() {
         <style>{styles}</style>
 
         {/* MEDICAL THEME BACKGROUND */}
-        <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-red-50 flex items-center justify-center p-4 font-sans text-slate-800">
+        <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-red-50 flex items-center justify-center p-4 font-sans text-slate-800 relative">
 
           {/* Main Card with Glassmorphism & Heartbeat Glow */}
-          <div className="bg-white/95 backdrop-blur-xl p-8 rounded-3xl shadow-2xl w-full max-w-5xl border border-rose-200 heartbeat-glow relative">
+          <div className="bg-white/95 backdrop-blur-xl p-8 rounded-3xl shadow-2xl w-full max-w-5xl border border-rose-200 heartbeat-glow">
 
             {/* Header - Centered */}
             <div className="text-center pt-6 pb-8">
@@ -607,28 +624,27 @@ function App() {
                 It does not constitute professional medical advice. Always consult a qualified doctor for health decisions.
               </p>
             </div>
+          </div>
 
-            {/* THE HELP MODAL POP-UP */}
-            {showHelp && (
+          {/* THE HELP MODAL POP-UP - MOVED OUTSIDE THE MAIN CARD */}
+          {showHelp && (
+              <div className="fixed inset-0 flex items-start justify-center p-4 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm pt-8 pb-8">
                 <div
-                    className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50"
-                    onClick={() => setShowHelp(false)}
+                    className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl relative animate-fade-in-up my-auto"
+                    onClick={(e) => e.stopPropagation()}
                 >
-                  <div
-                      className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl p-8 relative animate-fade-in-up max-h-[90vh] overflow-y-auto"
-                      onClick={(e) => e.stopPropagation()}
+                  {/* Close Button */}
+                  <button
+                      onClick={() => setShowHelp(false)}
+                      className="absolute top-4 right-4 text-rose-400 hover:text-rose-700 hover:bg-rose-50 rounded-full p-2 transition-colors z-10"
+                      aria-label="Close help"
                   >
-                    {/* Close Button */}
-                    <button
-                        onClick={() => setShowHelp(false)}
-                        className="absolute top-4 right-4 text-rose-400 hover:text-rose-700 hover:bg-rose-50 rounded-full p-2 transition-colors"
-                        aria-label="Close help"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
 
+                  <div className="p-8 max-h-[85vh] overflow-y-auto">
                     <h2 className="text-2xl font-bold text-rose-900 mb-6 flex items-center gap-3">
                       <div className="bg-rose-100 text-rose-600 rounded-full w-10 h-10 flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -771,8 +787,8 @@ function App() {
                     </div>
                   </div>
                 </div>
-            )}
-          </div>
+              </div>
+          )}
         </div>
       </>
   );
